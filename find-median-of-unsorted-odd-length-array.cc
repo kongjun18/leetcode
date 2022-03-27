@@ -10,7 +10,7 @@ using namespace std;
 int partition(vector<int> &arr, int start, int end) {
   int privot = arr[end];
   int result = 0;
-  for (int i = 0; i < end - 1; ++i) {
+  for (int i = 0; i < end; ++i) {
     if (arr[i] < privot) {
       swap(arr[result++], arr[i]);
     }
