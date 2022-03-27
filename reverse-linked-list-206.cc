@@ -1,3 +1,24 @@
+// 将下一个节点放到最前面
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+         ListNode *dummy_head = new ListNode(0, head);
+         ListNode *prev = dummy_head;
+         ListNode *curr = dummy_head->next;
+         ListNode *next = nullptr;
+         if (!curr) {return nullptr;}
+         while (curr->next) {
+             next = curr->next;
+             curr->next = next->next;
+             next->next = prev->next;
+             prev->next = next;
+         }
+         return dummy_head->next;
+    }
+
+};
+
+// 当前节点指向上一个节点
 class Solution {
 public:
   ListNode *reverseList(ListNode *head) {
