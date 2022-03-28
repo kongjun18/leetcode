@@ -1,9 +1,12 @@
 // 阿里巴巴补笔试：对于无序的长度为奇数的数组，求其中位数。
+//
+// 他妈的 std::partition()，返回的不是 pivot！！！
+// std::stable_partition() 返回的才是 pivot 的迭代器！！！
 #include <algorithm>
-#include <random>
 #include <cassert>
 #include <cstdlib>
 #include <iostream>
+#include <random>
 #include <vector>
 using namespace std;
 
@@ -19,7 +22,7 @@ int partition(vector<int> &arr, int start, int end) {
   return result;
 }
 
-int MiddleNumber(vector<int> &arr) {
+int MedianHandWritten(vector<int> &arr) {
   int start = 0;
   int end = arr.size() - 1;
   int middle = arr.size() / 2;
@@ -35,18 +38,46 @@ int MiddleNumber(vector<int> &arr) {
   return arr[middle];
 }
 
+int MedianSTL(vector<int> &arr) {
+  auto middle = std::next(arr.begin(), arr.size() / 2);
+  auto begin = arr.begin();
+  auto end = arr.end();
+  auto index = std::stable_partition(
+      begin, end, [pivot = *begin](int val) { return val < pivot; });
+  while (index != middle) {
+    if (index < middle) {
+      begin = std::next(index, 1);
+    } else {
+      end = index;
+    }
+    index = std::stable_partition(
+        begin, end, [pivot = *begin](int val) { return val < pivot; });
+  }
+  return *middle;
+}
+
 int main() {
   vector<int> test(101);
 
   auto generator = std::mt19937{std::random_device{}()};
   for (int i = 0; i < 1000; ++i) {
-    cout << i << endl;
     std::random_device rd{};
     std::generate(test.begin(), test.end(), generator);
     vector<int> other(test);
-    int mid = MiddleNumber(test);
+    int mid = MedianHandWritten(test);
     sort(other.begin(), other.end());
     assert(mid == other[other.size() / 2]);
   }
+  cout << "MedianHandWritten() passes test" << endl;
+
+  for (int i = 0; i < 1000; ++i) {
+    std::random_device rd{};
+    std::generate(test.begin(), test.end(), generator);
+    vector<int> other(test);
+    int mid = MedianSTL(test);
+    sort(other.begin(), other.end());
+    assert(mid == other[other.size() / 2]);
+  }
+  cout << "MedianSTL() passes test" << endl;
   return 0;
 }
