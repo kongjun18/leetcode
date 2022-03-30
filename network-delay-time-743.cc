@@ -13,7 +13,7 @@ public:
     for (const auto &edge : times) {
       matrix[edge[0] - 1][edge[1] - 1] = edge[2];
     }
-    // 循环 n - 1 次，计算起始节点到其他节点的最小距离。
+    // 循环 n 次，计算起始节点到其他节点的最小距离。
     for (int i = 0; i < n; ++i) {
       int min = -1;
       // 找到未访问的距离最小的节点
@@ -23,7 +23,7 @@ public:
         }
       }
       visited[min] = true;
-      // 从此节点更新相邻节点
+      // 从此节点更新相邻节点最短距离
       for (int j = 0; j < n; ++j) {
         dist[j] = std::min(dist[j], dist[min] + matrix[min][j]);
       }
