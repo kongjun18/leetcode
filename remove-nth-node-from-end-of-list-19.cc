@@ -15,7 +15,6 @@
 //     实现时注意 while (n-- >= 0) 循环 n + 1 次，因为每次判断都减一，
 //     判断失败后 n 的值是 -1。
 
-
 // 暴力解法实现
 //
 // class Solution {
@@ -47,7 +46,7 @@
 //   }
 // };
 
-// 快慢指针实现
+// 无哨兵节点+快慢指针
 class Solution {
 public:
   ListNode *removeNthFromEnd(ListNode *head, int n) {
@@ -65,5 +64,26 @@ public:
     }
     slow->next = slow->next ? slow->next->next : nullptr;
     return head;
+  }
+};
+
+// 哨兵节点+快慢指针
+class Solution {
+public:
+  ListNode *removeNthFromEnd(ListNode *head, int n) {
+    ListNode *slow = head;
+    ListNode *fast = head;
+    ListNode *dummy = new ListNode(0, head);
+    ListNode *prev = dummy;
+    while (n-- && fast) {
+      fast = fast->next;
+    }
+    while (fast) {
+      prev = slow;
+      fast = fast->next;
+      slow = slow->next;
+    }
+    prev->next = slow->next;
+    retrun dummy->next;
   }
 };
