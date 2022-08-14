@@ -2,7 +2,7 @@
 class Solution {
 public:
   int networkDelayTime(vector<vector<int>> &times, int n, int k) {
-    const int infinity = INT_MAX / 2;
+    const int infinity = 0x3f3f3f;
     vector<vector<pair<int, int>>> graph(n);
     vector<int> dist(n, infinity);
     for (const auto &edge : times) {
@@ -38,7 +38,7 @@ class Solution {
 public:
   int networkDelayTime(vector<vector<int>> &times, int n, int k) {
     // infinity 不能是 INT_MAX，否则后续的计算会溢出。
-    const int infinity = INT_MAX / 2;
+    const int infinity = 0x3f3f3f;
     vector<vector<int>> matrix(n, vector<int>(n, infinity));
     vector<int> dist(n, infinity);
     dist[k - 1] = 0;
