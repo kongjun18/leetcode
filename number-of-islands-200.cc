@@ -2,6 +2,8 @@
 //
 // 注意，leetcode 569 的图矩阵元素类型是 int，而这里是
 // char。做题要先看题目要求、 数据范围、数据类型等。
+
+// BFS
 class Solution {
 public:
   int numIslands(vector<vector<char>> &grid) {
@@ -37,5 +39,45 @@ public:
       }
     }
     return nr_island;
+  }
+};
+
+// DFS
+class Solution {
+public:
+  int numIslands(vector<vector<char>> &grid) {
+    int ans = 0;
+    for (int i = 0; i < grid.size(); ++i) {
+      for (int j = 0; j < grid[0].size(); ++j) {
+        if (grid[i][j] == '1') {
+          ++ans;
+          dfs(grid, i, j);
+        }
+      }
+    }
+    return ans;
+  }
+
+private:
+  bool isValid(vector<vector<char>> &grid, int i, int j) {
+    if (i < 0 || i >= grid.size() || j < 0 || j >= grid[0].size()) {
+      return false;
+    }
+    return true;
+  }
+  void dfs(vector<vector<char>> &grid, int i, int j) {
+    if (!isValid(grid, i, j) || grid[i][j] == '0') {
+      return;
+    }
+    grid[i][j] = '0';
+    static vector<pair<int, int>> direction{
+        {0, 1},
+        {0, -1},
+        {1, 0},
+        {-1, 0},
+    };
+    for (const auto &dir : direction) {
+      dfs(grid, i + dir.first, j + dir.second);
+    }
   }
 };
