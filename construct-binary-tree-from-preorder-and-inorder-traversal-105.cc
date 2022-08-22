@@ -1,4 +1,6 @@
-// See construct-binary-tree-from-inorder-and-postorder-traversal-106.cc
+// 姊妹题：
+// - construct-binary-tree-from-inorder-and-postorder-traversal-106
+// - construct-binary-tree-from-preorder-and-inorder-traversal-105
 class Solution {
 public:
   TreeNode *buildTree(vector<int> &preorder, vector<int> &inorder) {
