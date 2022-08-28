@@ -1,10 +1,13 @@
-// 对二叉搜索树中序遍历得到有序序列，将二叉搜索树转化为双向链表实际上就是按照
-// 中序遍历的结果构造二分搜索树，中序遍历的过程中，左节点使用后就不会再使用，直
-// 接将左孩子作为链表节点的 prev，右孩子作为链表节点的 next 即可。
-//
 // convert-binary-search-tree-to-sorted-doubly-linked-list-426 是 Leetcode 付费
 // 题目，《剑指 Offer》36 题相同，因此这里直接使用《剑指 Offer》36 题，即
 // er-cha-sou-suo-shu-yu-shuang-xiang-lian-biao-lcof-2048。
+//
+// 姊妹题：
+// - flatten-binary-tree-to-linked-list-114
+//
+// 对二叉搜索树中序遍历得到有序序列，将二叉搜索树转化为双向链表实际上就是按照
+// 中序遍历的结果构造二分搜索树，中序遍历的过程中，左节点使用后就不会再使用，直
+// 接将左孩子作为链表节点的 prev，右孩子作为链表节点的 next 即可。
 
 /*
 // Definition for a Node.
