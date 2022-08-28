@@ -1,3 +1,6 @@
+// 思路见 stackoverflow
+// [Find the pair across 2 arrays with kth largest sum](https://stackoverflow.com/questions/5212037/find-the-pair-across-2-arrays-with-kth-largest-sum)
+//
 // 当前最小数对下标分别为 (Ia, Ib)，那么下一个比它们大但是尽可能小的数对要么是 (Ia+1, Ib)，
 // 要么是 (Ia, Ib+1)。
 //
