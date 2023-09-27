@@ -1,6 +1,5 @@
 // 1. 如何寻找终止的边界？
-//   - 查找最右边的位置
-//     1 2 2 3 4 查找 2
+//   - 查找最右边的位置 1 2 2 3 4 查找 2
 //         ^ ^
 //         | |
 //         l h
@@ -53,5 +52,45 @@ public:
             return vector<int>{leftIdx, rightIdx};
         }
         return vector<int>{-1, -1};
+    }
+};
+
+// 实现一个 Golang sort.Search() 分别搜索第一个 >= 和 > 的下标。
+class Solution {
+public:
+    template<typename Predicate>
+    // 返回 predicate 第一个 predicate 为假的下标
+    int searchRangeImpl(vector<int>& nums, Predicate predicate) {
+      int i = 0, j = nums.size() - 1;
+      while (i <= j) {
+        int mid = i + (j-i) / 2;
+        if (predicate(nums[mid])) {
+          i = i + 1;
+        } else {
+          j = j - 1;
+        }
+      }
+      return i;
+    }
+
+    vector<int> searchRange(vector<int>& nums, int target) {
+      // 第一个大于等于 target 的下标
+      auto begin = searchRangeImpl(nums, [target] (const auto value) {
+        return value < target;
+      });
+      if (!(begin < nums.size() && nums[begin] == target)) {
+        begin = -1;
+      }
+
+      // 第一个大于 target 的下标
+      auto end = searchRangeImpl(nums, [target] (const auto value) {
+        return value <= target;
+      });
+      if (end > 0 && nums[end-1] == target) {
+        end -= 1;
+      } else {
+        end = -1;
+      }
+      return {begin, end};
     }
 };
