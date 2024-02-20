@@ -6,25 +6,22 @@
  *     Right *TreeNode
  * }
  */
-
-// 用栈控制节点的处理，后续遍历也可以使用类似的计数处理节点。
-func preorderTraversal(root *TreeNode) []int {
-	ans := []int{}
-	var st []*TreeNode
-	if root != nil {
-		st = append(st, root)
-	}
-	for len(st) != 0 {
-		curr := st[len(st)-1]
-		st = st[:len(st)-1]
-		ans = append(ans, curr.Val)
-
-		if curr.Right != nil {
-			st = append(st, curr.Right)
-		}
-		if curr.Left != nil {
-			st = append(st, curr.Left)
+func inorderTraversal(root *TreeNode) []int {
+	var res []int
+	var stack []*TreeNode
+	curr := root
+	for len(stack) > 0 || curr != nil {
+		if curr != nil {
+			stack = append(stack, curr)
+			curr = curr.Left
+		} else {
+			node := stack[len(stack)-1]
+			stack = stack[:len(stack)-1]
+			res = append(res, node.Val)
+			if node.Right != nil {
+				curr = node.Right
+			}
 		}
 	}
-	return ans
+	return res
 }
