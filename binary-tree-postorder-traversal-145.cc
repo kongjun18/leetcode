@@ -56,6 +56,8 @@ public:
     }
 };
 
+// 栈顶要么是不可用推进的点（访问节点的时机），要么是可以继续推进的点（右兄弟）。
+// 先通过栈推进到无法推进（栈顶是父亲），弹出栈顶并访问。
 class Solution {
 public:
   vector<int> postorderTraversal(TreeNode *root) {
@@ -65,6 +67,7 @@ public:
     if (root)
       s.push(root);
     while (!s.empty()) {
+      // 栈顶不是父亲，可以推进
       if (curr != s.top()->left && curr != s.top()->right) {
         // 这里控制往左还是往右推进
         while (curr = s.top()) {
@@ -79,6 +82,7 @@ public:
         }
         s.pop(); // remove NULL node
       }
+      // 推进到了无法推进，访问！
       curr = s.top();
       s.pop();
       result.push_back(curr->val);
