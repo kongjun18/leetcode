@@ -25,6 +25,8 @@ public:
       if (nums[mid] == target) {
         return mid;
       }
+      // mid 位于“第一段”
+      // 有序数组视作“第二段”不存在，因此这里必须是 <=
       if (nums[0] <= nums[mid]) {
         if (nums[0] <= target && target < nums[mid]) {
           right = mid - 1;
