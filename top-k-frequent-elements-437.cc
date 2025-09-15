@@ -1,4 +1,4 @@
-// 维护前 k 大的元素，要用小顶堆，而且必须先 push 再 pop 多余元素。
+// 维护前 k 大的元素，当 heap 大小超过 k 时，需要把最小的元素弹出来，因此需要用小根堆。
 class Solution {
 public:
   vector<int> topKFrequent(vector<int> &nums, int k) {
