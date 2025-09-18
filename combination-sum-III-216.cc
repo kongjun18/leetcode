@@ -13,8 +13,8 @@ private:
     if (path.size() == k) {
       if (accumulate(path.cbegin(), path.cend(), 0) == n) {
         result.push_back(path);
-        return;
       }
+      return;
     }
     for (int v = val; v <= 9; ++v) {
       path.push_back(v);
