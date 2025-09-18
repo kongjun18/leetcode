@@ -1,7 +1,6 @@
-// 这道题和 ./combi
-// 难点：
-// - 如何切割字符串？
-// - 怎样模拟切割？
+// 回溯算法
+//
+// Optimization: 用 dp 实现 O(1) 时间判断子串是否回文
 
 #include <vector>
 #include <string>
