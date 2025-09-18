@@ -1,7 +1,12 @@
 // See: unique-paths-62
 //
-// 这道题在路上添加了障碍物，这会影响 dp[][] 的初始化。
-// 如果第一行或第一列中出现障碍物，那么该行/列之后的格子都不可达！
+// 对于任意一个位置，有 4 种可能：
+// 1. 可以从上面和左边到达
+// 2. 只可以从上面到达
+// 3. 只可以中左边到达
+// 4. 位置是石头，不可到达
+//
+// 从 dp 公式可以看到，初始化是从左往右，从上往下。
 class Solution {
 public:
   int uniquePathsWithObstacles(vector<vector<int>> &obstacleGrid) {
