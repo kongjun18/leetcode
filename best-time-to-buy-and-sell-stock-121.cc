@@ -1,5 +1,22 @@
 // 贪心法
 //
+// 低买高卖，也就是说把价格看成折线图，所有上升的折线之和就是最大利润。
+// 昨天高，就应该低买高卖。
+class Solution {
+public:
+    int maxProfit(vector<int>& prices) {
+                int profit = 0;
+        for (int i = 1; i < prices.size(); i++) {
+            if (prices[i] > prices[i-1]) {
+                profit += prices[i] - prices[i-1];
+            }
+        }
+        return profit;
+    }
+};
+
+// 贪心
+//
 // 局部最优：计算股票最低价买入到当前股票价格卖出的利润。
 // 全局最优：随着时间的推移更新股票最低价，取利润最大值。
 class Solution {
