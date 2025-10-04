@@ -94,3 +94,66 @@ private:
     return area;
   }
 };
+
+
+// UnionFind
+//
+// 用并查集记录每个联通通量的大小，求最大值
+//
+class Solution {
+private:
+    struct UnionFind {
+        unordered_map<int, int> parent;
+        unordered_map<int, int> size;
+        int find(int node) {
+            if (parent[node] == node) {
+                return node;
+            }
+            // path compression
+            parent[node] = find(parent[node]);
+            return parent[node];
+        }
+
+        void unite(int x, int y) {
+            int root_x = find(x);
+            int root_y = find(y);
+            if (root_x == root_y) {
+                return;
+            }
+            // put the smaller set into the larger set to balance tree height.
+            int small_set = root_x < root_y ? root_x : root_y;
+            int large_set = root_x < root_y ? root_y : root_x;
+            parent[small_set] = large_set;
+            size[large_set] += size[small_set];
+            size.erase(small_set);
+        }
+
+        UnionFind(vector<vector<int>> &grid) {
+            for (int i = 0; i < grid.size(); i++) {
+                for (int j = 0; j < grid[0].size(); j++) {
+                    if (grid[i][j] == 1) {
+                        int node = i*grid[0].size()+j;
+                        parent[node] = node;
+                        size[node] = 1;
+
+                        if (i-1>=0 && grid[i-1][j] == 1) {
+                            unite(node, (i-1)*grid[0].size()+j);
+                        }
+                        if (j-1>=0 && grid[i][j-1] == 1) {
+                            unite(node, i*grid[0].size()+j-1);
+                        }
+                    }
+                }
+            }
+        }
+    };
+public:
+    int maxAreaOfIsland(vector<vector<int>>& grid) {
+        UnionFind uf(grid);
+        int max_size = 0;
+        for (const auto [root, size] : uf.size) {
+            max_size = max(max_size, size);
+        }
+        return max_size;
+    }
+};
