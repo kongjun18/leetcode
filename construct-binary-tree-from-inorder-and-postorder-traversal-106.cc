@@ -1,37 +1,41 @@
-// 姊妹题：
-// - construct-binary-tree-from-preorder-and-inorder-traversal-105
-// - construct-binary-tree-from-preorder-and-postorder-traversal-889
-// 注意区间的分割：
-// 1. 可能出现区间为 0 的情况，比如 [2,1] [2,1]。
-// 2. 注意区间的变化，第 24、25 行。
-// 3. 注意维持前置条件（区间最小为 1），否则迭代器越界。
+// inorder: [left] root [right]
+// postorder: [left] [right] root
+//
+// For soly inorder traversal result, it is impossible to restore the tree as
+// we cannot determine the root position. For soly postorder, we can determine
+// the root position since the root is at the end of postorder, but we
+// cannot partition left and right sub-trees.
+//
+// For an inorder sub-tree traversal result, we can get the root position using
+// postorder as all nodes are distinctive. If the root position of inorder traversal
+// is determined, go to the left/right sub-tree and repeat the procedure.
 class Solution {
-public:
-  TreeNode *buildTree(vector<int> &inorder, vector<int> &postorder) {
-    if (postorder.empty() || inorder.empty()) {
-      return nullptr;
-    }
-    return buildTreeImpl(inorder.cbegin(), inorder.cend(), postorder.cbegin(),
-                         postorder.cend());
-  }
-
 private:
-  template <typename Iter>
-  TreeNode *buildTreeImpl(Iter inorder_begin, Iter inorder_end,
-                          Iter postorder_start, Iter postorder_end) {
-    if (distance(inorder_begin, inorder_end) == 1) {
-      return new TreeNode(*inorder_begin);
-    } else if (distance(inorder_begin, inorder_end) == 0) { // 小心区间为 0
-      return nullptr;
+    // IMPORTANT: post_end must be a reference, or else the current backtracking
+    // level uses outdated post_end.
+    TreeNode* buildTreeImpl(vector<int> &inorder, int in_start, int in_end, vector<int> &postorder, int &post_end) {
+
+        int val = postorder[post_end];
+        int pos = std::find(inorder.cbegin()+in_start, inorder.cbegin()+in_end+1, val) - inorder.cbegin();
+
+        TreeNode *root = new TreeNode(val, nullptr, nullptr);
+
+        // No right sub-tree
+        if (pos < in_end) {
+            post_end--;
+            root->right = buildTreeImpl(inorder, pos+1, in_end, postorder, post_end);
+        }
+
+        // No left sub-tree
+        if (pos > in_start) {
+            post_end--;
+            root->left = buildTreeImpl(inorder, in_start, pos-1, postorder, post_end);
+        }
+        return root;
     }
-    auto value = *(postorder_end - 1);
-    auto inorder_privot = find(inorder_begin, inorder_end, value);
-    auto postorder_privot =
-        postorder_start + distance(inorder_begin, inorder_privot);
-    auto left = buildTreeImpl(inorder_begin, inorder_privot, postorder_start,
-                              postorder_privot);
-    auto right = buildTreeImpl(inorder_privot + 1, inorder_end,
-                               postorder_privot, postorder_end - 1);
-    return new TreeNode(value, left, right);
-  }
+public:
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        int post_end = postorder.size()-1;
+        return buildTreeImpl(inorder, 0, inorder.size()-1, postorder, post_end);
+    }
 };
