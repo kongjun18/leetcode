@@ -58,3 +58,37 @@ public:
       return -1;
   }
 };
+
+// 二分答案搜索
+//
+// count(x) 计算 nums 大于或等于 x 的元素数量。count(x) 是一个非递增函数，问题
+// 转换成求右界。
+//
+// 注意：在二分求右界中，中点将区间划分成 [l, m-1] 和 [m, r]。
+class Solution {
+private:
+    int count(vector<int>& nums, int x) {
+        int cnt = 0;
+        for (const int num : nums) {
+            if (num >= x) {
+                cnt++;
+            }
+        }
+        return cnt;
+    }
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int left = *min_element(nums.cbegin(), nums.cend());
+        int right = *max_element(nums.cbegin(), nums.cend());
+        while (left < right) {
+            int mid = (left + right + 1) /2;
+            if (count(nums, mid) >= k) {
+                left = mid;
+            } else {
+                right = mid-1;
+            }
+        }
+        cout << left << right << endl;
+        return left;
+    }
+};
