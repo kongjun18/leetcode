@@ -45,3 +45,37 @@ public:
     return nullptr;
   }
 };
+
+// DFS
+//
+// pre-order traversal searchers for q and q. The lowest common ancester is
+// either:
+// - q and q are in the left and right sub-tree.
+// - root is p/q and other target node resides in it's sub-tree.
+//
+// The return value indicates whether the target node is found. Since all nodes
+// have different values, it is no necessary to differeciate q and p.
+class Solution {
+    TreeNode *lca{NULL};
+    bool dfs(TreeNode *root, TreeNode *p, TreeNode *q) {
+        if (!root) {
+            return false;
+        }
+        auto left = dfs(root->left, p, q);
+        auto right = dfs(root->right, p, q);
+
+        if (left && right) {
+            lca = root;
+        }
+        if ((left || right) && (root->val == p->val || root->val == q->val)) {
+            lca = root;
+        }
+        return left || right || (root->val == p->val) || root->val == q->val;
+    }
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+       dfs(root, p, q);
+       return lca;
+
+    }
+};
