@@ -28,3 +28,63 @@ public:
     return cnt;
   }
 };
+
+// Better Dynamic Programming
+// dp[i][j] = s[i] == s[j] && dp[i+1][j-1].
+// dp[i+1][j-1] should be calculated first as d[i][j] depends on d[i+1][j-1]. As
+// a result, we iterate bottom-up and left-to-right.
+//
+// if i > j, dp[i][j] should be true, so dp is initialized as true.
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int n = s.size();
+        vector<vector<int>> f(n, vector<int>(n, 1));
+        int cnt = n;
+
+        for(int i = n-1;i >= 0;i--){
+            for(int j = i+1;j < n;j++){
+                f[i][j] = f[i+1][j-1] && s[i] == s[j];
+                if(f[i][j] && i != j){
+                    cnt++;
+                }
+            }
+        }
+
+        return cnt;
+    }
+};
+// DFS + memorization
+class Solution {
+    private:
+        bool dfs(string &s, int i , int j, vector<vector<int>> &memo) {
+            if (memo[i][j] != -1) {
+                return memo[i][j];
+            }
+
+            if (s[i] != s[j]) {
+                memo[i][j] = false;
+            } else {
+                if (i+1 > j-1) {
+                    memo[i][j] = true;
+                } else {
+                    memo[i][j] = dfs(s, i+1, j-1, memo);
+                }
+            }
+
+            return memo[i][j];
+        }
+public:
+    int countSubstrings(string s) {
+        int ans=0;
+        vector<vector<int>> memo(s.size(), vector<int>(s.size(), -1));
+        for (int i = 0; i < s.size(); i++) {
+            for (int j = i; j < s.size(); j++) {
+                if (dfs(s, i, j, memo)) {
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+};
