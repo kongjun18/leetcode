@@ -16,17 +16,15 @@ public:
         unordered_map<int, int> cnt;
         // [N], k = N
         cnt[0] = 1;
-        vector<int> prev(nums.size());
         int sum = 0;
         int ans = 0;
 
         for (int i = 0; i < nums.size(); i++) {
             sum += nums[i];
-            prev[i] = sum;
             // we needs the number of prefix[i] whose value is prefix[j] - K,
             // where i MUST be smaller than j. Therefore, we should increment
             // ans in this for loop instead of outside.
-            ans += cnt[prev[i] - k];
+            ans += cnt[sum - k];
             // Cornor case: nums = [1], k = 0
             cnt[sum]++;
 
