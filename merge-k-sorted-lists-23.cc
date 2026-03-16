@@ -2,8 +2,11 @@
 //
 // 关键在于降低“在 k 个有序链表中查找最小节点”的复杂度，这里使用堆维护最小节点。
 //
-// 另一个难点在于，每次从堆中取到最小节点后，如何将该节点的下一个节点加入堆中，
-// 直接将链表节点指针加入即可，不要加入链表在数组中的下标。
+// 实现：
+// 1. 第一种实现：聚焦于 Node，直接把 Node* 插入到堆中。
+// 2. 第二种实现：聚焦于 N-way merge，把 N-way 链表的 ID 插入道堆中。
+
+// 第一种实现：聚焦于 Node，直接把 Node* 插入到堆中。
 class Solution {
 public:
   ListNode *mergeKLists(vector<ListNode *> &lists) {
@@ -29,4 +32,44 @@ public:
     }
     return dummy->next;
   }
+};
+
+
+// 第二种实现：聚焦于 N-way merge，把 N-way 链表的 ID 插入道堆中。
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        auto cmp = [&](int lhs, int rhs) {
+            return lists[lhs]->val > lists[rhs]->val;
+        };
+        priority_queue<int, vector<int>, decltype(cmp)> heap(cmp);
+        for (int i = 0; i < lists.size(); i++) {
+            if (!lists[i]) {
+                continue;
+            }
+            heap.push(i);
+        }
+
+        ListNode *dummy = new ListNode();
+        ListNode *curr = dummy;
+        while (!heap.empty()) {
+            int merge = heap.top();
+            heap.pop();
+
+            ListNode *node = lists[merge];
+            ListNode *next = node->next;
+            node->next = nullptr;
+            lists[merge] = next;
+
+            curr->next = node;
+            curr = curr->next;
+
+            if (lists[merge]) {
+                heap.push(merge);
+            }
+        }
+        ListNode *ans = dummy->next;
+        delete dummy;
+        return ans;
+    }
 };
