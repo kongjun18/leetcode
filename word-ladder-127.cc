@@ -13,7 +13,7 @@ private:
                 return false;
             }
         }
-        return diff == 1;
+        return diff == ;
     }
 
 public:
@@ -31,13 +31,6 @@ public:
                     graph[i].push_back(j);
                 }
             }
-        }
-        for (int i = 0; i < graph.size(); i++) {
-            cout << i << ": ";
-            for (const auto n : graph[i]) {
-                cout << n << " ";
-            }
-            cout << endl;
         }
         vector<int> dist(wordList.size(), INT_MAX);
         priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
