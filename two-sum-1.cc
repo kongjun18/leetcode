@@ -1,17 +1,18 @@
 // 哈希表
+// for (iteration)
+//     // lookup hashtable
+//     // update hashtable
 class Solution {
 public:
-  vector<int> twoSum(vector<int> &nums, int target) {
-    std::unordered_map<int, int> num2idx;
-    for (int i = 0; i < nums.size(); ++i) {
-      num2idx[nums[i]] = i;
+    vector<int> twoSum(vector<int>& nums, int target) {
+        unordered_map<int, int> m;
+
+        for (int i = 0; i < nums.size(); i++) {
+            if (m.find(target - nums[i]) != m.cend()) {
+                return {i, m[target-nums[i]]};
+            }
+            m[nums[i]] = i;
+        }
+        return {};
     }
-    for (int i = 0; i < nums.size(); ++i) {
-      auto iter = num2idx.find(target - nums[i]);
-      if (iter != num2idx.end() && iter->second != i) {
-        return {i, iter->second};
-      }
-    }
-    return {};
-  }
 };
