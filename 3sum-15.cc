@@ -8,36 +8,33 @@ class Solution {
 public:
     vector<vector<int>> threeSum(vector<int>& nums) {
         sort(nums.begin(), nums.end());
-        vector<vector<int>> res;
-        for (int i = 0; i < nums.size()-1; i++) {
+        vector<vector<int>> ans;
+        int prev = -1;
+        for (int i = 0; i < nums.size(); i++) {
             // 去重
-            if (i-1 >= 0) {
-                if (nums[i-1]== nums[i]) {
-                    continue;
-                }
+            if (i > 0 && nums[i-1] == nums[i]) {
+                continue;
             }
-
-            int left = i+1;
-            int right = nums.size()-1;
-            while (left < right) {
-
-                int sum = nums[left] + nums[right];
-                if (sum < -nums[i]) {
-                   left++;
-                } else if (sum > -nums[i]) {
-                    right--;
-                } else { // 去重
-                     if (left-1 <= i || nums[left]!=nums[left-1]) {
-                        res.push_back({nums[i], nums[left], nums[right]});
-                    }
-                    left++;
-                    continue;
-
-
+            int j = i+1;
+            int k = nums.size()-1;
+            int target = 0 - nums[i];
+            while (j < k) {
+                int sum = nums[j] + nums[k];
+                if (sum == target) {
+                    ans.push_back({nums[i], nums[j], nums[k]});
+                    j++;
+                    k--;
+                    // 先移动指针，后去重。
+                    // 避免复杂的边界条件。
+                    while (j < k && nums[j-1] == nums[j]) j++;
+                    while (j < k && nums[k+1] == nums[j]) k--;
+                } else if (sum < target) {
+                    j++;
+                } else {
+                   k--;
                 }
-
             }
         }
-        return res;
+        return ans;
     }
 };
