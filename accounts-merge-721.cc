@@ -1,5 +1,12 @@
+// ## Solution 1: BFS
+//
 // Each node represents an email and the graph is a map
 // which automatically merges accounts by the key (email).
+//
+// ## Solution 2: Union find set
+// The logic is almost same with BFS:
+// 1. build a graph (connect nodes) -> add emails in the union find set.
+// 2. BFS -> iterate through emails and check connectivity by searching the union find set.
 class Solution {
 private:
     vector<string> bfs(unordered_map<string, vector<string>> &graph, unordered_map<string, string> &nameByEmail, unordered_map<string, int> &visited, const string &start) {
